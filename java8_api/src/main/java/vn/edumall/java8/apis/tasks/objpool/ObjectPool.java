@@ -1,9 +1,12 @@
 package vn.edumall.java8.apis.tasks.objpool;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+@Getter
 public abstract class ObjectPool<T> {
     private int maxPoolSize;
     private List<T> available;
@@ -29,12 +32,14 @@ public abstract class ObjectPool<T> {
             obj = available.get(0);
             available.remove(obj);
             inUse.add(obj);
+            System.out.print("| get from pool. Now available = "+available.size()+", inUse = "+inUse.size());
         }
         else{
             // need create more object
             if (available.size() + inUse.size() < maxPoolSize) {
                 obj = create();
                 available.add(obj);
+                System.out.print("| create more obj. Now total objs in pool = "+(available.size()+inUse.size()));
             }
         }
         return obj;
